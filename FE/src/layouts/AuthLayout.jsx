@@ -13,7 +13,7 @@ export default function AuthLayout() {
           {/* Sidebar */}
           <aside className="w-64 overflow-y-auto">
             {login && (
-              <ul className="">
+              <ul className="p-4 space-y-4 ">
                 <SideBar />
               </ul>
             )}

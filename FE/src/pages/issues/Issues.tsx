@@ -5,7 +5,9 @@ import { NavLink } from 'react-router-dom';
 import { useSearchParams } from 'react-router-dom';
 import VerticalDivider from '../../components/Divider/VerticialDivider'; // Corrected typo in file name
 import { Button } from '../../ui-library/avinash-react-component-library';
-
+import Badge from '../../ui-library/Badge';
+import {Panel} from '../../ui-library/avinash-react-component-library';
+import { useState } from 'react';
 const Links = [
   {
     title: 'Issues',
@@ -24,6 +26,8 @@ export default function Issues() {
   const [searchParams] = useSearchParams();
   const currentState = searchParams.get("state");
 
+  const [isCreatePanelOpen, setIsCreatePanelOpen] = useState(false);
+
   return (
     <>
       <Breadcrumb links={Links} />
@@ -41,19 +45,19 @@ export default function Issues() {
                 : "text-gray-500 hover:text-gray-800"
             }`}
           >
-            Open
+            Open <Badge count={0} />
           </NavLink>
 
           <NavLink
             to="/issues?state=closed"
-            className={`pb-2 text-sm font-medium border-b -mb-px ${
+            className={`pb-2 text-sm font-medium ${
               currentState === "closed"
               ? "border-b-2 border-blue-600 text-gray-900"
                 : "text-gray-500 hover:text-gray-800"
             }`}
             
           >
-            Closed
+            Closed<Badge count={0} />
           </NavLink>
 
           <NavLink
@@ -64,14 +68,14 @@ export default function Issues() {
                 : "text-gray-500 hover:text-gray-800"
             }`}
           >
-            All
+            All<Badge count={0} />
           </NavLink>
         </div>
 
         {/* Actions */}
         <div className="flex gap-3">
-          <Button title="Bulk edit" />
-          <Button title="New item" variant="blue" className="text-sm" />
+          <Button title="Bulk edit"  />
+          <Button title="New item" variant="blue" className="text-sm" onClick={()=>setIsCreatePanelOpen(true)} />
         </div>
       </div>
 
@@ -106,6 +110,32 @@ export default function Issues() {
           Learn more
         </a>
       </div>
+
+{isCreatePanelOpen && (<Panel heading="New Issue" subHeading="Create a new issue">
+        <div className="space-y-4">
+          <div>
+            <label htmlFor="title" className="block text-sm font-medium text-gray-700">
+              Title
+            </label>
+            <input
+              type="text"
+              id="title"
+              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
+            />
+          </div>
+          <div>
+            <label htmlFor="description" className="block text-sm font-medium text-gray-700">
+              Description
+            </label>
+            <textarea
+              id="description"
+              rows={4}
+              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
+            />
+          </div>
+        </div>
+      </Panel>
+  )}
     </>
   );
 }
